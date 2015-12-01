@@ -1,0 +1,132 @@
+---
+title: "Adveq  map application"
+author: "Amine Gassem"
+date: "November 26, 2015"
+output: 
+  pdf_document: 
+    toc: yes
+---
+
+----------------
+
+# OVERVIEW
+
+This document is a specification document. 
+
+# GOALS
+
+Within R and shiny framework , create a shiny application to display adveq global investments multiple and FMV on a global map per country or region. 
+
+1. Create adveq map package `adveqmap`(choose better busniess . This package is the business layer. 
+Contains all data and computations financial functions and objects.
+2. Create a shiny application: `adveqmapshiny` this the package viewer. Internally the shiny app uses `adveqmap` package. 
+
+Note that we isolate the busniess layer from view layer, this will :
+
+* Better test and documentation. In fact, the workflow to test and document a package is clear but now way to do this for a shiny application (even if you can add comments to the code)
+* The shiny application can be enhanced later to include many other packages.
+* For advanced user , it is faster to have all busniess in a package ,no need to launch the shiny application. 
+
+# SPECIFICATIONS
+
+Adveq investment will be displayed in the map according  to the *Investment multiple*. The latter can be defined as for each geography $g$
+
+$$ I^g_{multiple} = \frac{V_T^g}{C_T^g} $$
+Where:
+
+* $g$ can be a country or a region.
+* $V_T^g$ is the sum of value over all the companies of the selected region:  $$V_T^g=\sum_{i \in Comp_g}{v_i}$$
+* $C_T^g$ is the sum of cost over all the companies of the selected region:  $$C_T^g=\sum_{i \in Comp_g}{c_i}$$
+
+
+
+# MILESTONES
+
+We try here to give the details of future development. Development is divided in different milestone.
+Each milestone contains a set of R function/tasks to do. The list is not exhaustive or definitive. 
+
+## M1 : `adveqmap` package
+
+### 1. Init the  package
+
+  - Prepare project as an R package
+  - Set github 
+  - Init tests. All functions will be tested (`testthat`) 
+  - Init documentation using documented (`roxygen`)
+  
+### 2. Load data 
+
+Data can be loaded from an Excel workbook:
+
+```{r load_data,eval=FALSE}
+
+db <- load_data(path,table,conn=NULL)
+
+```
+We can imagine that the data will be loaded later directly from a data base. 
+For example from an `SQL server` data base
+
+```{r load_data_db,eval=FALSE}
+library(rsqlserver)
+conn <- dbConnect()
+db <- load_data(table,conn=conn)
+
+```
+the result `db` is a `data.table`
+
+### 3. Clean data 
+
+* Clean data ,remove extra columns
+* Format dates , format numbers
+* Extract regions/sub regions 
+
+
+```{r clean_db,eval=FALSE}
+db <- clean_data(db)
+```
+
+### 4. Compute investment multiple 
+
+Compute busniess variable that will be used to color the map.
+
+```{r investmultiple,eval=FALSE}
+db <- invest_multiple(db)
+```
+
+### 5. Create the map 
+
+This the main function of the package.  Create a colorplate map.
+
+```{r map,eval=FALSE}
+map <- get_map(db)
+
+```
+
+## M2 `shiny` application
+
+### 1. Init the shiny application 
+
+* Create application hierarchy 
+* Create user interface 
+* Set github
+
+### 2. Integrate the map to the application
+
+Essentially here we call `adveqmap` functions. Either to show data or map.
+
+* Develop the server part
+
+### 3. Add app options 
+
+* Add some filters 
+
+Some function here can be moved to `adveqmap` package once they are stable.
+The idea is to keep the shiny application as light as possible and with the minimum of business logic.
+
+
+### 4. App deployment
+
+* Deploy the application.
+* Test functionalities within the server.
+
+
