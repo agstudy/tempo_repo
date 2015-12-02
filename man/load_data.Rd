@@ -14,7 +14,18 @@ load_data(path, sheet = "RAW")
 \value{
 data.table containing
 \itemize{
-\item {location}{thegeography locatioin}
+\item{loc_name} {:The location name}
+\item{loc_id} {:The location id}
+\item{region} {:The location region id}
+\item{subregion} {:The location subregion id}
+\item{fund} {:The fund name}
+\item{under} {:The underyling name}
+\item{part} {:The adveq participation}
+\item{date} {:The date of investment}
+\item{currency}{: The investment currency}
+\item{industry} {:The industry sector}
+\item{value} {:The investment amount}
+\item{cost} {:The investment cost}
 }
 }
 \description{
