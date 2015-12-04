@@ -7,4 +7,9 @@ Author: Amine Gassem<contact@ag-study.com>
 Maintainer: Amine Gassem<contact@ag-study.com>
 Description: More about what it does (maybe more than one line)
 License: MIT
-Imports: data.table,XLConnect,quantmod
+Imports: data.table,
+         XLConnect,
+         quantmod,
+         rgeos,
+         rgdal,
+         leaflet

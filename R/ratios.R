@@ -24,6 +24,12 @@ get_fx <- function(db){
 #' This functions computes indcators like fmv and multiple.
 #'
 #' @param db  data_base
+#' @param level charcater level of aggregation. It can be 
+#' \itemize{
+#' \item{country}
+#' \item{region}
+#' \item{subregion}
+#' }
 #' @param ... other parametersused by load_data 
 #'
 #' @return data.table containing 
@@ -36,9 +42,20 @@ get_fx <- function(db){
 #' @export
 #'
 get_ratios <- 
-  function(db=load_data(...),...){
+  function(db=load_data(...),level,...){
+    
+    if(missing(level)) level <- "country"
     fx <- get_fx(db)
-    db[,list(multiple=sum(value)/sum(cost)),"loc_name,date"]
-    
-    
+    key <- switch (level,
+           "region"="region,date",
+           "subregion"="subregion,date",
+           "loc_name,date")
+           
+    db[,list(
+      multiple=
+               sum(value*part*fx[date==date,toEUR])/
+        sum(cost*part*fx[date==date,toEUR]),
+      nbr =length(unique(company))),key]
   }
+
+
