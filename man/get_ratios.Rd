@@ -4,10 +4,17 @@
 \alias{get_ratios}
 \title{Compute indicators used by map}
 \usage{
-get_ratios(db = load_data(...), ...)
+get_ratios(db = load_data(...), level, ...)
 }
 \arguments{
 \item{db}{data_base}
+
+\item{level}{charcater level of aggregation. It can be
+\itemize{
+\item{country}
+\item{region}
+\item{subregion}
+}}
 
 \item{...}{other parametersused by load_data}
 }

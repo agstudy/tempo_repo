@@ -23,6 +23,7 @@
 #' \item{subregion} {:The location subregion id}
 #' \item{fund} {:The fund name}
 #' \item{under} {:The underyling name}
+#' \item{company} {:The company name}
 #' \item{part} {:The adveq participation}
 #' \item{date} {:The date of investment}
 #' \item{currency}{: The investment currency}
@@ -41,8 +42,9 @@ load_data <-
     
     setDT(db)[,{
       code <- gsub('(^[0-9]+).*','\\1',Geography)
+      loc <- vapply(gsub('^[0-9]+ ','',Geography),format_location,"")
       list(
-        loc_name=gsub('^[0-9]+ ','',Geography),
+        loc_name=as.character(loc),
         loc_id=code,
         region=substr(code,1,1),
         subregion=substr(code,1,2),
@@ -60,46 +62,12 @@ load_data <-
 
 
 
-
-#' Get FX rate in USD and EUR
-#'
-#' @param db 
-#'
-#' @return data.table of rates
-#' @importFrom quantmod getFX
-#' @export
-#'
-get_fx <- function(db){
-  unique(db[,list(currency,date)])[,{
-    list(
-    toEUR=getFX(paste(currency,"EUR",sep="/"),
-          from=date,date,  auto.assign = FALSE)[[1]],
-    toUSD=getFX(paste(currency,"USD",sep="/"),
-          from=date,date,  auto.assign = FALSE)[[1]])
-    },
-    "date,currency"]
-}
-
-#' Compute indicators used by map 
-#' 
-#' This functions computes indcators like fmv and multiple.
-#'
-#' @param db  data_base
-#' @param ... other parametersused by load_data 
-#'
-#' @return data.table containing 
-#' \itemize{
-#' \item {region}
-#' \item {subregion}
-#' \item {multiple}
-#' \item {fmv}
-#' }
-#' @export
-#'
-indicators <- 
-  function(db=load_data(...),...){
-    fx <- get_fx(db)
-    db[,list(multiple=sum(value)/sum(cost)),"loc_name,date"]
+format_location <- 
+  function(loc){
     
-    
+    switch (loc,
+            "UK"="United Kingdom",
+            loc)
   }
+
+

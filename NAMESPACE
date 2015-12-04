@@ -2,8 +2,11 @@
 
 export(get_fx)
 export(get_ratios)
-export(indicators)
 export(load_data)
+export(plot_map)
 import(XLConnect)
 import(data.table)
+import(leaflet)
+import(rgdal)
+import(rgeos)
 importFrom(quantmod,getFX)

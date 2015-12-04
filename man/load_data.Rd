@@ -20,6 +20,7 @@ data.table containing
 \item{subregion} {:The location subregion id}
 \item{fund} {:The fund name}
 \item{under} {:The underyling name}
+\item{company} {:The company name}
 \item{part} {:The adveq participation}
 \item{date} {:The date of investment}
 \item{currency}{: The investment currency}
