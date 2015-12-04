@@ -51,12 +51,13 @@ load_data <-
         fund=Your_Fund,
         under=Fund_Investment,
         company=Company,
-        part=Your_Fund_Percent,
+        part=Your_Fund_Percent/100,
         date=as.Date(As_Of_Date,"%d/%m/%Y"),
         industry=Industry,
         currency=YF_Currency,
         value=Total_Value_YF_Cur,
-        cost=Total_Cost_YF_Cur)
+        cost=Total_Cost_YF_Cur,
+        recentValue =Recent_Value_YF_Cur)
     }]
   }
 

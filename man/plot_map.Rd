@@ -4,7 +4,7 @@
 \alias{plot_map}
 \title{Plot investment map}
 \usage{
-plot_map()
+plot_map(ratios = get_ratios(), criteria = "multiple", currency = "EUR")
 }
 \value{
 map

@@ -47,15 +47,18 @@ get_ratios <-
     if(missing(level)) level <- "country"
     fx <- get_fx(db)
     key <- switch (level,
-           "region"="region,date",
-           "subregion"="subregion,date",
-           "loc_name,date")
-           
-    db[,list(
-      multiple=
-               sum(value*part*fx[date==date,toEUR])/
-        sum(cost*part*fx[date==date,toEUR]),
-      nbr =length(unique(company))),key]
+                   "region"="region,date",
+                   "subregion"="subregion,date",
+                   "loc_name,date")
+        
+    merge(fx,db,by=c("date","currency"))[,
+      list(
+        multiple=sum(value*part)/sum(cost*part),
+        fmvEUR=sum(recentValue*part*toEUR),
+        fmvUSD=sum(recentValue*part*toUSD),
+        nbr =length(unique(company))
+      )
+    ,key]
   }
 
 

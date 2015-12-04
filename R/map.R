@@ -11,7 +11,7 @@
 #' @import leaflet
 #' @import rgdal
 #'
-plot_map <- function(){
+plot_map <- function(ratios = get_ratios(),criteria="multiple",currency="EUR"){
   create_popups <- 
     function(result){
       paste(
@@ -21,38 +21,48 @@ plot_map <- function(){
         )
       )
     }
- 
-#   function getColor(d) {
-#     return d > 1000 ? '#800026' :
-#       d > 500  ? '#BD0026' :
-#       d > 200  ? '#E31A1C' :
-#       d > 100  ? '#FC4E2A' :
-#       d > 50   ? '#FD8D3C' :
-#       d > 20   ? '#FEB24C' :
-#       d > 10   ? '#FED976' :
-#       '#FFEDA0';
-#   }
+  
+  legend_title <- 
+    function(criteria,currency){
+      if(criteria=="multiple")"multiple quantile"
+      else ifelse(currency=="EUR","FMV(EUR)","FMV(USD)")
+    }
+  
+  get_values <- 
+    function(criteria,currency){
+      if(criteria=="multiple")ratios[,multiple]
+      else if(currency=="EUR")ratios[,fmvEUR]
+           else ratios[,fmvUSD]
+    }
+  
+  
+  get_pal <- function(values)
+    colorQuantile(.e$pal,values , n =length(.e$pal))
+  ratios$indicator <- get_values(criteria,currency)
+  
   # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-  rr <- get_ratios()
-  countries <- readOGR("inst/data/countries.geojson", "OGRGeoJSON")
-  fcountries <- countries[countries$admin %in% rr$loc_name,]
+  countries <- .e$countries
+  fcountries <- countries[countries$admin %in% ratios$loc_name,]
   fcountries <- fcountries[order(fcountries$admin),]
-  dd <- merge(rr,countries@data,by.x="loc_name",by.y="admin")
+  dd <- merge(ratios,countries@data,by.x="loc_name",by.y="admin")
   fcountries@data <- dd[order(dd$loc_name),]
-#   shapes_centers <- gCentroid(fcountries,byid=TRUE)
-#   result <- as.data.frame(cbind(shapes_centers@coords,fcountries@data))
+  qpal <- get_pal(fcountries$indicator)
+  
   map <- leaflet(fcountries) %>% 
-         addTiles(urlTemplate="http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png")
-  qpal <- colorQuantile("Reds", countries$multiple, n =4)
+         addTiles(
+           urlTemplate=.e$url_tile,
+           options = tileOptions(noWrap = TRUE))
+  
   map %>% addPolygons(
     stroke = TRUE,  
                 fillOpacity = 0.7,
                 dashArray= '3',
-                color="white",
-                fillColor = ~qpal(multiple),
+                color=.e$polygon_color,
+                fillColor = ~qpal(indicator),
     popup=create_popups(as.data.frame(dd))) %>% 
-  addLegend(pal = qpal, values = ~multiple, opacity = 1) 
-#   addMarkers(lng=result[,"x"], 
-#                lat=result[,"y"],
-#                popup=create_popups(result)) 
+  addLegend(pal = qpal, 
+            values = ~indicator, 
+            opacity = 1,
+            position="bottomleft",
+            title=legend_title(criteria,currency))
 }
