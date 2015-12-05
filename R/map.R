@@ -1,44 +1,47 @@
 
+create_popups <- 
+  function(result){
+    paste(
+      paste0(
+        "<b>",result[,"loc_name"],"</b><br/>",
+        "<b>",as.character(result[,"nbr"])," Companies </b>"
+      )
+    )
+  }
 
+legend_title <- 
+  function(criteria,currency){
+    if(criteria=="multiple")"multiple quantile"
+    else ifelse(currency=="EUR","FMV(EUR)","FMV(USD)")
+  }
+
+get_values <- 
+  function(ratios,criteria,currency){
+    if(criteria=="multiple")ratios[,multiple]
+    else if(currency=="EUR")ratios[,fmvEUR]
+    else ratios[,fmvUSD]
+  }
+
+
+get_pal <- function(values)
+  colorQuantile(.e$pal,values , n =length(.e$pal))
 
 
 
 #' Plot investment map
 #'
+#' @param ratios data.table containing variables to plot
+#' @param criteria character 
+#' @param currency character
 #' @return map
 #' @export
 #' @import rgeos
 #' @import leaflet
 #' @import rgdal
 #'
-plot_map <- function(ratios = get_ratios(),criteria="multiple",currency="EUR"){
-  create_popups <- 
-    function(result){
-      paste(
-        paste0(
-          "<b>",result[,"loc_name"],"</b><br/>",
-          "<b>",as.character(result[,"nbr"])," Companies </b>"
-        )
-      )
-    }
-  
-  legend_title <- 
-    function(criteria,currency){
-      if(criteria=="multiple")"multiple quantile"
-      else ifelse(currency=="EUR","FMV(EUR)","FMV(USD)")
-    }
-  
-  get_values <- 
-    function(criteria,currency){
-      if(criteria=="multiple")ratios[,multiple]
-      else if(currency=="EUR")ratios[,fmvEUR]
-           else ratios[,fmvUSD]
-    }
-  
-  
-  get_pal <- function(values)
-    colorQuantile(.e$pal,values , n =length(.e$pal))
-  ratios$indicator <- get_values(criteria,currency)
+plot_map <- function(ratios = get_ratios(),criteria="multiple",currency=NULL){
+ 
+  ratios$indicator <- get_values(ratios,criteria,currency)
   
   # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
   countries <- .e$countries
@@ -51,7 +54,7 @@ plot_map <- function(ratios = get_ratios(),criteria="multiple",currency="EUR"){
   map <- leaflet(fcountries) %>% 
          addTiles(
            urlTemplate=.e$url_tile,
-           options = tileOptions(noWrap = TRUE))
+           options = tileOptions(noWrap = FALSE))
   
   map %>% addPolygons(
     stroke = TRUE,  

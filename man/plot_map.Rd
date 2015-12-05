@@ -4,7 +4,14 @@
 \alias{plot_map}
 \title{Plot investment map}
 \usage{
-plot_map(ratios = get_ratios(), criteria = "multiple", currency = "EUR")
+plot_map(ratios = get_ratios(), criteria = "multiple", currency = NULL)
+}
+\arguments{
+\item{ratios}{data.table containing variables to plot}
+
+\item{criteria}{character}
+
+\item{currency}{character}
 }
 \value{
 map

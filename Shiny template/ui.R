@@ -5,6 +5,10 @@ main_title <- 'Adveq Shiny Template'
 
 
 
+
+
+
+
 shinyUI(fluidPage(
     fluidRow(
         column( # logo
