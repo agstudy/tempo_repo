@@ -31,7 +31,7 @@ get_values <-
 
 
 get_pal <- function(values)
-  colorQuantile(.e$pal,values , n =length(.e$pal))
+  colorQuantile(adveqmap_options("pal"),values , n =length(adveqmap_options("pal")))
 
 
 
@@ -51,7 +51,7 @@ plot_map <- function(ratios = get_ratios(),criteria="multiple",currency=NULL){
   ratios$indicator <- get_values(ratios,criteria,currency)
   
   # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-  countries <- .e$countries
+  countries <- .e$COUNTRIES
   fcountries <- countries[countries$admin %in% ratios$loc_name,]
   fcountries <- fcountries[order(fcountries$admin),]
   dd <- merge(ratios,countries@data,by.x="loc_name",by.y="admin")
@@ -60,7 +60,7 @@ plot_map <- function(ratios = get_ratios(),criteria="multiple",currency=NULL){
   
   map <- leaflet(fcountries) %>% 
          addTiles(
-           urlTemplate=.e$url_tile,
+           urlTemplate=adveqmap_options("url_tile"),
            options = tileOptions(noWrap = FALSE))
   
   map %>% addPolygons(
@@ -68,7 +68,7 @@ plot_map <- function(ratios = get_ratios(),criteria="multiple",currency=NULL){
     stroke = TRUE,  
                 fillOpacity = 0.7,
                 dashArray= '3',
-                color=.e$polygon_color,
+                color=adveqmap_options("polygon_color"),
                  fillColor = ~qpal(indicator))%>%
 #     popup=create_popups(as.data.frame(dd))) %>% 
   addLegend(pal = qpal, 

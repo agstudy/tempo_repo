@@ -11,7 +11,7 @@ db <- load_data()
 
 shinyServer(function(input, output) {
   vals <- reactiveValues(country=NULL)
-  ratios <- reactive(get_ratios())
+  ratios <- reactive(get_ratios(db = db))
   output$investmap <- renderLeaflet({
     if(is.null(input$variable))return()
     plot_map(ratios = ratios() , 

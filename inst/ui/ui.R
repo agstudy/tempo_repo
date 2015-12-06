@@ -1,6 +1,7 @@
 library(shinydashboard)
 library(leaflet)
 library(shiny)
+library(rCharts)
 
 main_title <- 'Adveq Investment Distribution'
 

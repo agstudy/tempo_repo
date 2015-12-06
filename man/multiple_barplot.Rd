@@ -4,7 +4,7 @@
 \alias{multiple_barplot}
 \title{Plot bar chart plot by underlying for a location}
 \usage{
-multiple_barplot(dat = load_data(), country, id_dom)
+multiple_barplot(dat = load_data(), country, id_dom = "investChart")
 }
 \arguments{
 \item{dat}{data set}
