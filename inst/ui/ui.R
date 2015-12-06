@@ -23,7 +23,7 @@ logo_row <-
 
 
 left_side <-
-  column(width = 9,
+  column(width = 8,
          box(width = NULL, solidHeader = TRUE,
              leafletOutput("investmap", height = 500)
          ),
@@ -32,24 +32,39 @@ left_side <-
          )
   )
 
+
+
+var_select <-
+  column(width = 6,
+         selectInput("variable", "Variable",
+                     choices = c(
+                       "multiple" = "multiple",
+                       "fmv" = "fmv"
+                     ),selected = "multiple"))
+
+currency_select <- 
+  column(width = 6,
+         conditionalPanel(
+           condition = "input.variable == 'fmv'",
+           selectInput("currency", "Currency",
+                       choices = c(
+                         "EUR" = "EUR",
+                         "USD" = "USD"
+                       ))))
+
+chart_region <- 
+  div(showOutput("investChart", "Highcharts")
+    , class = "span4")
+
+
+
 right_side <- 
-  column(width = 3,
-         box(width = NULL, status = "warning",
-             selectInput("variable", "Variable",
-                         choices = c(
-                           "multiple" = "multiple",
-                           "fmv" = "fmv"
-                         ),selected = "multiple"),
-             conditionalPanel(
-               condition = "input.variable == 'fmv'",
-               selectInput("currency", "Currency",
-                           choices = c(
-                             "EUR" = "EUR",
-                             "USD" = "USD"
-                           ))),
-                 div(showOutput("investChart", "Highcharts"), class = "span3")
-         )
+  column(width = 4,
+         var_select,
+         currency_select,
+         chart_region
   )
+
 
 
 main_row <-

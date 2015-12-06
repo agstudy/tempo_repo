@@ -19,18 +19,19 @@ shinyServer(function(input, output) {
              currency = input$currency)
   })
   
- 
   
-
+  
+  
   showCountryPopup <- function(country, lat, lng) {
     
     content = popup_content(country ,ratios()[loc_name==country,nbr])
     leafletProxy("investmap") %>% addPopups(lng, lat, content, layerId = country)
   }
   
-  output$investChart <- renderChart2({
-    if(is.null(vals$country))return()
-    multiple_barplot(db,vals$country,id="investChart")
+  observe({
+    if(!is.null(vals$country))
+      output[["investChart"]] <- 
+        renderChart(multiple_barplot(db,vals$country,id="investChart"))
   })
   
   
