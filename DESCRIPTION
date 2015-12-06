@@ -12,4 +12,5 @@ Imports: data.table,
          quantmod,
          rgeos,
          rgdal,
-         leaflet
+         leaflet,
+         rCharts

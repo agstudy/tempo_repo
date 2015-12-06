@@ -1,11 +1,18 @@
 
-create_popups <- 
-  function(result){
-    paste(
+#' Create popup content
+#' 
+#' When a map shape is slected a popup can be trigged
+#'
+#' @param country character country ou region selected
+#' @param nbr numeric number of companies
+#'
+#' @return popup text as character
+#' @export
+popup_content <- 
+  function(country,nbr){
       paste0(
-        "<b>",result[,"loc_name"],"</b><br/>",
-        "<b>",as.character(result[,"nbr"])," Companies </b>"
-      )
+        "<b>",country,"</b><br/>",
+        "<b>",nbr," Companies </b>"
     )
   }
 
@@ -57,12 +64,13 @@ plot_map <- function(ratios = get_ratios(),criteria="multiple",currency=NULL){
            options = tileOptions(noWrap = FALSE))
   
   map %>% addPolygons(
+    layerId=~loc_name,
     stroke = TRUE,  
                 fillOpacity = 0.7,
                 dashArray= '3',
                 color=.e$polygon_color,
-                fillColor = ~qpal(indicator),
-    popup=create_popups(as.data.frame(dd))) %>% 
+                 fillColor = ~qpal(indicator))%>%
+#     popup=create_popups(as.data.frame(dd))) %>% 
   addLegend(pal = qpal, 
             values = ~indicator, 
             opacity = 1,

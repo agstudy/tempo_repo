@@ -2,8 +2,6 @@ library(shinydashboard)
 library(leaflet)
 library(shiny)
 
-
-
 main_title <- 'Adveq Investment Distribution'
 
 logo_row <- 
@@ -28,7 +26,7 @@ left_side <-
          box(width = NULL, solidHeader = TRUE,
              leafletOutput("investmap", height = 500)
          ),
-         box(width = NULL,
+         box(width = NULL,solidHeader = TRUE,
              uiOutput("investTable")
          )
   )
@@ -48,7 +46,7 @@ right_side <-
                              "EUR" = "EUR",
                              "USD" = "USD"
                            ))),
-             uiOutput("investChart")
+                 div(showOutput("investChart", "Highcharts"), class = "span3")
          )
   )
 
