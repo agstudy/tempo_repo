@@ -39,7 +39,7 @@ var_select <-
          selectInput("variable", "Variable",
                      choices = c(
                        "multiple" = "multiple",
-                       "fmv" = "fmv"
+                       "FMV" = "fmv"
                      ),selected = "multiple"))
 
 currency_select <- 

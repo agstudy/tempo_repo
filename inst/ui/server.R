@@ -14,6 +14,7 @@ shinyServer(function(input, output) {
   ratios <- reactive(get_ratios(db = db))
   output$investmap <- renderLeaflet({
     if(is.null(input$variable))return()
+    adveqmap_options(url_tile="http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png")
     plot_map(ratios = ratios() , 
              criteria = input$variable, 
              currency = input$currency)
