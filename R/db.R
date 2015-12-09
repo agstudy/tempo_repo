@@ -65,10 +65,11 @@ load_data <-
 
 format_location <- 
   function(loc){
-    
-    switch (loc,
+#     if(grepl("U.S",loc))return("United States of America")
+#     else 
+     switch (loc,
             "UK"="United Kingdom",
-            loc)
+           loc)
   }
 
 

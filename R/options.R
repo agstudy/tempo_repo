@@ -1,7 +1,8 @@
 #' @import settings
 .options <- 
   settings::options_manager(
-      pal = c('#FFEDA0','#FEB24C','#FC4E2A' ,'#BD0026'  ),
+      #pal = c('#FFEDA0','#FEB24C','#FC4E2A' ,'#BD0026'  ),
+      pal = rev(c("#800026","#BD0026","#E31A1C", "#FC4E2A", "#FD8D3C", '#FEB24C','#FED976',"#FFEDA0")),
       polygon_color = "white",
       url_tile = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}",
       style_list = list(fontSize = '13px', fontFamily = 'Verdana, sans-serif'),

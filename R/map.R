@@ -30,8 +30,10 @@ get_values <-
   }
 
 
-get_pal <- function(values)
-  colorQuantile(adveqmap_options("pal"),values , n =length(adveqmap_options("pal")))
+get_pal <- function(values){
+  colorBin(adveqmap_options("pal"),range(values,na.rm = TRUE) , 
+           bin =length(adveqmap_options("pal")),na.color = "#E6E6E6")           
+}
 
 
 
@@ -51,26 +53,23 @@ plot_map <- function(ratios = get_ratios(),criteria="multiple",currency=NULL){
   ratios$indicator <- get_values(ratios,criteria,currency)
   
   # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-  countries <- .e$COUNTRIES
-  fcountries <- countries[countries$admin %in% ratios$loc_name,]
-  fcountries <- fcountries[order(fcountries$admin),]
-  dd <- merge(ratios,countries@data,by.x="loc_name",by.y="admin")
-  fcountries@data <- dd[order(dd$loc_name),]
-  qpal <- get_pal(fcountries$indicator)
+  countries <- .e$COUNTRIES[order(.e$COUNTRIES$admin),]
+  countries@data <- merge(countries,ratios,by.x="admin",by.y="loc_name",all.x=TRUE)
+  qpal <- get_pal(countries$indicator)
   
-  map <- leaflet(fcountries) %>% 
-         addTiles(
-           urlTemplate=adveqmap_options("url_tile"),
-           options = tileOptions(noWrap = FALSE))
+  map <- leaflet(countries) %>% 
+   addTiles(
+    urlTemplate = "//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
+    attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
+  )
   
   map %>% addPolygons(
-    layerId=~loc_name,
+    layerId=~admin,
     stroke = TRUE,  
                 fillOpacity = 0.7,
                 dashArray= '3',
                 color=adveqmap_options("polygon_color"),
                  fillColor = ~qpal(indicator))%>%
-#     popup=create_popups(as.data.frame(dd))) %>% 
   addLegend(pal = qpal, 
             values = ~indicator, 
             opacity = 1,
