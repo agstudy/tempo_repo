@@ -10,9 +10,9 @@
 #' @export
 popup_content <- 
   function(country,nbr){
-      paste0(
-        "<b>",country,"</b><br/>",
-        "<b>",nbr," Companies </b>"
+    paste0(
+      "<b>",country,"</b><br/>",
+      "<b>",nbr," Companies </b>"
     )
   }
 
@@ -49,30 +49,47 @@ get_pal <- function(values){
 #' @import rgdal
 #'
 plot_map <- function(ratios = get_ratios(),criteria="multiple",currency=NULL){
- 
+  
   ratios$indicator <- get_values(ratios,criteria,currency)
   
   # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-  countries <- .e$COUNTRIES[order(.e$COUNTRIES$admin),]
-  countries@data <- merge(countries,ratios,by.x="admin",by.y="loc_name",all.x=TRUE)
+  countries <- word_map()
+  countries@data <- merge(countries,ratios,by.x="name",by.y="loc_name",all.x=TRUE)
   qpal <- get_pal(countries$indicator)
   
   map <- leaflet(countries) %>% 
-   addTiles(
-    urlTemplate = "//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
-    attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
-  )
+    addTiles(
+      urlTemplate = "//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
+      attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
+    )
   
   map %>% addPolygons(
-    layerId=~admin,
+    layerId=~name,
     stroke = TRUE,  
-                fillOpacity = 0.7,
-                dashArray= '3',
-                color=adveqmap_options("polygon_color"),
-                 fillColor = ~qpal(indicator))%>%
-  addLegend(pal = qpal, 
-            values = ~indicator, 
-            opacity = 1,
-            position="bottomleft",
-            title=legend_title(criteria,currency))
+    fillOpacity = 0.7,
+    dashArray= '3',
+    color=adveqmap_options("polygon_color"),
+    fillColor = ~qpal(indicator))%>%
+    addLegend(pal = qpal, 
+              values = ~indicator, 
+              opacity = 1,
+              position="bottomleft",
+              title=legend_title(criteria,currency))
 }
+
+
+
+
+
+#' @export 
+word_map <- function(){
+  if(is.null(.e$WORD_MAP)){
+    topo_word <- system.file(package = "adveqmap","data","countries.topojson")
+    my_layer <- ogrListLayers(topo_word)
+    word_map <- readOGR(topo_word, layer = my_layer[1],
+              drop_unsupported_fields = TRUE)
+    .e$WORD_MAP <- word_map[order(word_map$name),]
+  }
+  .e$WORD_MAP
+}
+
