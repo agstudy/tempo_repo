@@ -10,14 +10,15 @@ library(adveqmap)
 db <- load_data()
 
 shinyServer(function(input, output) {
-  vals <- reactiveValues(country=NULL)
+  values <- reactiveValues(highlight=c())
   ratios <- reactive(get_ratios(db = db))
+  
+  invest_map <- reactive( InvestMap(ratios = ratios() , 
+                                   criteria = input$variable, 
+                                   currency = input$currency))
   output$investmap <- renderLeaflet({
     if(is.null(input$variable))return()
-    adveqmap_options(url_tile="http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png")
-    plot_map(ratios = ratios() , 
-             criteria = input$variable, 
-             currency = input$currency)
+    plot(invest_map())
   })
   
   
@@ -30,23 +31,34 @@ shinyServer(function(input, output) {
   }
   
   observe({
-    if(!is.null(vals$country))
-      output[["investChart"]] <- 
-        renderChart(multiple_barplot(db,vals$country,id="investChart"))
+    values$highlight <- input$investmap_shape_mouseover$id
   })
   
+  observe({
+    if(!is.null(values$highlight))
+      output[["investChart"]] <- 
+        renderChart(multiple_barplot(db,values$highlight,id="investChart"))
+  })
+  
+  
+  lastHighlighted <- c()
   
   # When map is clicked, show a popup with city info
   observe({
-    leafletProxy("investmap") %>% clearPopups()
-    event <- input$investmap_shape_click
-    if (is.null(event))
+    if (length(lastHighlighted) > 0)
+      leafletProxy("investmap") %>% 
+      add_polygon(invest_map(),values$highlight,FALSE)
+    lastHighlighted <<- values$highlight
+    
+    if (is.null(values$highlight))
       return()
     
     isolate({
-      vals$country <- event$id 
-      showCountryPopup(event$id, event$lat, event$lng)
+      leafletProxy("investmap") %>% 
+        add_polygon(invest_map(),values$highlight,TRUE)
     })
   })
+  
+  # Draw the given states, with or without highlighting
   
 })

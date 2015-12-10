@@ -4,13 +4,14 @@
       #pal = c('#FFEDA0','#FEB24C','#FC4E2A' ,'#BD0026'  ),
       pal = rev(c("#800026","#BD0026","#E31A1C", "#FC4E2A", "#FD8D3C", '#FEB24C','#FED976',"#FFEDA0")),
       polygon_color = "white",
-      url_tile = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}",
+      url_template = "//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
       style_list = list(fontSize = '13px', fontFamily = 'Verdana, sans-serif'),
       data_labels_theme =  list(enabled = TRUE, rotation=-90,
                                 align = 'center', color = '#FFFFFF', 
                                 x = 4, y = 15),
       axis_labels_theme = list(rotation = -45, 
-                               align = 'right') 
+                               align = 'right'),
+      missing_color = "#E6E6E6"
     )
   
 
