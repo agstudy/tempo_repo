@@ -13,9 +13,10 @@ shinyServer(function(input, output) {
   values <- reactiveValues(highlight=c())
   ratios <- reactive(get_ratios(db = db))
   
-  invest_map <- reactive( InvestMap(ratios = ratios() , 
-                                   criteria = input$variable, 
-                                   currency = input$currency))
+  invest_map <- reactive( 
+    InvestMap(ratios = ratios() , 
+              criteria = input$variable, 
+              currency = input$currency))
   output$investmap <- renderLeaflet({
     if(is.null(input$variable))return()
     plot(invest_map())
@@ -25,7 +26,6 @@ shinyServer(function(input, output) {
   
   
   showCountryPopup <- function(country, lat, lng) {
-    
     content = popup_content(country ,ratios()[loc_name==country,nbr])
     leafletProxy("investmap") %>% addPopups(lng, lat, content, layerId = country)
   }
@@ -45,9 +45,12 @@ shinyServer(function(input, output) {
   
   # When map is clicked, show a popup with city info
   observe({
-    if (length(lastHighlighted) > 0)
-      leafletProxy("investmap") %>% 
-      add_polygon(invest_map(),values$highlight,FALSE)
+    if (length(lastHighlighted) > 0){
+      isolate(
+        leafletProxy("investmap") %>% 
+          add_polygon(invest_map(),lastHighlighted,FALSE)
+      )
+    }
     lastHighlighted <<- values$highlight
     
     if (is.null(values$highlight))

@@ -19,8 +19,8 @@ multiple_barplot <- function (dat=load_data(),country,id_dom="investChart") {
                         under], 
              type = "column",
              group="under",
-             title = "Investment vs Underlyings", 
-             subtitle = country)
+             subtitle = "Multiple vs Underlyings", 
+             title = country)
   style <- adveqmap_options("style_list")
   dlabels <- adveqmap_options("data_labels_theme")
   axis_labels <- adveqmap_options("axis_labels_theme")

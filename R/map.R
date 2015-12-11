@@ -52,7 +52,6 @@ plot.InvestMap <- function(x){
     layerId=~name,
     stroke = TRUE,  
     fillOpacity = 0.7,
-    dashArray= '3',
     color=adveqmap_options("polygon_color"),
     fillColor = ~qpal(indicator))%>%
     addLegend(pal = qpal, 
@@ -84,11 +83,10 @@ add_polygon <-
   function(map,investmap,country,highlight){
     map %>% addPolygons(
       data=investmap$data[investmap$data$name==country,],
-      layerId=country,
+      layerId=~name,
       stroke = TRUE,  
       fillOpacity = 0.7,
-      dashArray= '3',
-      color=adveqmap_options("polygon_color"),
+      color=ifelse(highlight,"blue",adveqmap_options("polygon_color")),
       fillColor = get_fill_color(investmap,country),
       weight=ifelse(highlight, 4, 1))
   }
