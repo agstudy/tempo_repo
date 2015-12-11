@@ -36,11 +36,10 @@
 load_data <- 
   function(path,sheet="RAW"){
     if (missing(path))
-      path <- system.file(package="adveqmap","data","database.xlsx")
-    wb <- loadWorkbook(path)
-    db <- readWorksheet(wb, sheet = "RAW")
+      path <- system.file(package="adveqmap","data","database.csv")
+    db <- fread(path)
     
-    setDT(db)[,{
+    db[,{
       code <- gsub('(^[0-9]+).*','\\1',Geography)
       loc <- vapply(gsub('^[0-9]+ ','',Geography),format_location,"")
       list(
