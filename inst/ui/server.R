@@ -8,7 +8,7 @@
 library(shiny)
 library(adveqmap)
 db <- load_data()
-
+print(nrow(db))
 shinyServer(function(input, output) {
   values <- reactiveValues(highlight=c())
   ratios <- reactive(get_ratios(db = db))
