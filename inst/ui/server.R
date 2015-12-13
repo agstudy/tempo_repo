@@ -6,8 +6,9 @@
 #
 
 library(shiny)
+#library(rCharts)
 library(adveqmap)
-Sys.setlocale("LC_ALL","English")
+library(leaflet)
 db <- load_data()
 shinyServer(function(input, output) {
   values <- reactiveValues(highlight=c())
@@ -37,9 +38,9 @@ shinyServer(function(input, output) {
 #   observe({
 #     if(!is.null(values$highlight))
 #       output[["investChart"]] <- 
-#         renderChart(multiple_barplot(db,values$highlight,id="investChart"))
+#         renderChart2(multiple_barplot(db,values$highlight,id="investChart"))
 #   })
-#   
+  
   
   lastHighlighted <- c()
   
