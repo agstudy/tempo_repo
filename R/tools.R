@@ -21,9 +21,10 @@ get_pal <- function(values){
 
 #' @importFrom rgdal readOGR
 #' @importFrom  rgdal ogrListLayers
-word_map <- function(){
+word_map <- function(topo_word){
   if(is.null(.e$WORD_MAP)){
-    topo_word <- system.file(package = "adveqmap","data","countries.topojson")
+    if(missing(topo_word))
+      topo_word <- file.path(package = "adveqmap","data","countries.topojson")
     my_layer <- ogrListLayers(topo_word)
     word_map <- readOGR(topo_word, layer = my_layer[1],
                         drop_unsupported_fields = TRUE)

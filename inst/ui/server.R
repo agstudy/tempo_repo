@@ -9,7 +9,7 @@ library(shiny)
 #library(rCharts)
 library(adveqmap)
 library(leaflet)
-db <- load_data()
+db <- load_data(path="data/database.csv")
 shinyServer(function(input, output) {
   values <- reactiveValues(highlight=c())
   ratios <- reactive(get_ratios(db = db))
@@ -17,7 +17,9 @@ shinyServer(function(input, output) {
   invest_map <- reactive( 
     InvestMap(ratios = ratios() , 
               criteria = input$variable, 
-              currency = input$currency))
+              currency = input$currency,
+              topo_word="data/countries.topojson")
+  )
   output$investmap <- renderLeaflet({
     if(is.null(input$variable))return()
     plot(invest_map())
@@ -35,11 +37,11 @@ shinyServer(function(input, output) {
     values$highlight <- input$investmap_shape_mouseover$id
   })
   
-#   observe({
-#     if(!is.null(values$highlight))
-#       output[["investChart"]] <- 
-#         renderChart2(multiple_barplot(db,values$highlight,id="investChart"))
-#   })
+  observe({
+    if(!is.null(values$highlight))
+      output[["investChart"]] <- 
+        renderChart2(multiple_barplot(db,values$highlight,id="investChart"))
+  })
   
   
   lastHighlighted <- c()

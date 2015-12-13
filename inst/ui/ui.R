@@ -1,7 +1,7 @@
 library(shinydashboard)
 library(leaflet)
 library(shiny)
-#library(rCharts)
+library(rCharts)
 
 main_title <- 'Adveq Investment Distribution'
 
@@ -53,7 +53,7 @@ currency_select <-
                        ))))
 
 chart_region <- 
-  div('showOutput("investChart", "Highcharts")'
+  div(showOutput("investChart", "Highcharts")
     , class = "span4")
 
 
