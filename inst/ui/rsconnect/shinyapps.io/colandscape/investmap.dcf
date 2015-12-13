@@ -1,8 +1,7 @@
 name: investmap
 account: colandscape
 server: shinyapps.io
-bundleId: 330050
+appId: 73059
+bundleId: 330104
 url: https://colandscape.shinyapps.io/investmap
-when: 1450033564.38145
-asMultiple: FALSE
-asStatic: FALSE
+when: 1450037859.61574

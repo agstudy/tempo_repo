@@ -37,11 +37,11 @@ shinyServer(function(input, output) {
     values$highlight <- input$investmap_shape_mouseover$id
   })
   
-  observe({
-    if(!is.null(values$highlight))
-      output[["investChart"]] <- 
-        renderChart2(multiple_barplot(db,values$highlight,id="investChart"))
-  })
+#   observe({
+#     if(!is.null(values$highlight))
+#       output[["investChart"]] <- 
+#         renderChart2(multiple_barplot(db,values$highlight,id="investChart"))
+#   })
   
   
   lastHighlighted <- c()
