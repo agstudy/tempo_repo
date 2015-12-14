@@ -26,6 +26,9 @@ word_map <- function(topo_word){
     if(missing(topo_word))
       topo_word <- file.path(package = "adveqmap","data","countries.topojson")
     ## my_layer <- ogrListLayers(topo_word)
+    
+#     topo_word_url <- 
+#       "https://github.com/agstudy/tempo_repo/blob/master/inst/data/countries.topojson"
     word_map <- readOGR(topo_word, layer = "countries.geo",
                         drop_unsupported_fields = TRUE)
     .e$WORD_MAP <- word_map[order(word_map$name),]
