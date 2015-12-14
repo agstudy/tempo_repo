@@ -29,6 +29,7 @@ word_map <- function(topo_word){
     
 #     topo_word_url <- 
 #       "https://github.com/agstudy/tempo_repo/blob/master/inst/data/countries.topojson"
+    cat("topo  word is: ",topo_word,"\n")
     word_map <- readOGR(topo_word, layer = "countries.geo",
                         drop_unsupported_fields = TRUE)
     .e$WORD_MAP <- word_map[order(word_map$name),]
