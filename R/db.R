@@ -14,7 +14,6 @@
 #' 
 #' @param path character Excel workbook path
 #' @param sheet character sheet name default to RAW
-#' @import XLConnect
 #' @return data.table containing
 #' \itemize{
 #' \item{loc_name} {:The location name}
