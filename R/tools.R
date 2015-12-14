@@ -25,8 +25,8 @@ word_map <- function(topo_word){
   if(is.null(.e$WORD_MAP)){
     if(missing(topo_word))
       topo_word <- file.path(package = "adveqmap","data","countries.topojson")
-    my_layer <- ogrListLayers(topo_word)
-    word_map <- readOGR(topo_word, layer = my_layer[1],
+    ## my_layer <- ogrListLayers(topo_word)
+    word_map <- readOGR(topo_word, layer = "countries.geo",
                         drop_unsupported_fields = TRUE)
     .e$WORD_MAP <- word_map[order(word_map$name),]
   }
