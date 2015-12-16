@@ -13,11 +13,11 @@
 #' @export
 #' @examples
 #' InvestMap()
-InvestMap <- function(ratios = get_ratios(),criteria="multiple",currency=NULL,topo_word){
+InvestMap <- function(ratios = get_ratios(),criteria="multiple",currency=NULL){
   
   legend_title <- legend_title(criteria,currency)
   ratios$indicator <- get_values(ratios,criteria,currency)
-  countries <- word_map(topo_word)
+  countries <- word_map()
   countries@data <- merge(countries,ratios,by.x="name",
                           by.y="loc_name",all.x=TRUE)
   structure(
