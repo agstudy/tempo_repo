@@ -10,15 +10,17 @@ library(shiny)
 library(adveqmap)
 library(leaflet)
 db <- load_data(path=file.path(".","data","database.csv"))
+word_path <- file.path(".","data","countries.topojson")
 shinyServer(function(input, output) {
   values <- reactiveValues(highlight=c())
   ratios <- reactive(get_ratios(db = db))
-  
-  invest_map <- reactive( 
-    InvestMap(ratios = ratios() , 
+  invest_map <- reactive( {
+    if (!file.exists(word_path))return()
+      InvestMap(ratios = ratios() , 
               criteria = input$variable, 
               currency = input$currency,
-              topo_word=file.path(".","data","countries.topojson"))
+              topo_word=word_path)
+  }
   )
   output$investmap <- renderLeaflet({
     if(is.null(input$variable))return()
