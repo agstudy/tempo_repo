@@ -27,6 +27,7 @@ word_map <- function(topo_word){
       topo_word <- file.path(package = "adveqmap","data","countries.topojson")
     if(!file.exists(topo_word)) return(NULL)
     cat("topo  word is: ",topo_word,"\n")
+    cat('current directory is ', getwd())
     word_map <- 
       readOGR(topo_word, layer = "countries.geo",
               drop_unsupported_fields = TRUE)
