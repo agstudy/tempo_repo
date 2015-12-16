@@ -4,8 +4,7 @@
 \alias{InvestMap}
 \title{Create InvestMap class}
 \usage{
-InvestMap(ratios = get_ratios(), criteria = "multiple", currency = NULL,
-  topo_word)
+InvestMap(ratios = get_ratios(), criteria = "multiple", currency = NULL)
 }
 \arguments{
 \item{ratios}{data.table containing values to show}

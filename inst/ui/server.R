@@ -10,7 +10,6 @@ library(rCharts)
 library(adveqmap)
 library(leaflet)
 db <- load_data(path=file.path(".","data","database.csv"))
-word_path <- file.path(getwd(),"data","word_map.rds")
 shinyServer(function(input, output) {
   values <- reactiveValues(highlight=c())
   ratios <- reactive(get_ratios(db = db))
@@ -18,8 +17,7 @@ shinyServer(function(input, output) {
     if (!file.exists(word_path))return()
       InvestMap(ratios = ratios() , 
               criteria = input$variable, 
-              currency = input$currency,
-              topo_word=word_path)
+              currency = input$currency)
   }
   )
   output$investmap <- renderLeaflet({
