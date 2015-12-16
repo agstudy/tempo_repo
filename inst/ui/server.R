@@ -9,7 +9,7 @@ library(shiny)
 #library(rCharts)
 library(adveqmap)
 library(leaflet)
-db <- load_data(path=file.path("data","database.csv"))
+db <- load_data(path=file.path(".","data","database.csv"))
 shinyServer(function(input, output) {
   values <- reactiveValues(highlight=c())
   ratios <- reactive(get_ratios(db = db))
@@ -18,7 +18,7 @@ shinyServer(function(input, output) {
     InvestMap(ratios = ratios() , 
               criteria = input$variable, 
               currency = input$currency,
-              topo_word=file.path("data","countries.topojson"))
+              topo_word=file.path(".","data","countries.topojson"))
   )
   output$investmap <- renderLeaflet({
     if(is.null(input$variable))return()
