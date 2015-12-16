@@ -19,11 +19,11 @@ get_pal <- function(values){
            na.color = adveqmap_options("missing_color"))           
 }
 
-#' @importFrom rgdal readOGR
-#' @importFrom  rgdal ogrListLayers
-word_map <- function(){
+
+word_map <- function(topo_word){
   if(is.null(.e$WORD_MAP)){
-    topo_word <- file.path(package = "adveqmap","data","word_map.rds")
+    if(missing(topo_word))
+      topo_word <- file.path(package = "adveqmap","data","word_map.rds")
     .e$WORD_MAP <- readRDS(topo_word)
   }
   .e$WORD_MAP
