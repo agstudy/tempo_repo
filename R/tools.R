@@ -25,13 +25,11 @@ word_map <- function(topo_word){
   if(is.null(.e$WORD_MAP)){
     if(missing(topo_word))
       topo_word <- file.path(package = "adveqmap","data","countries.topojson")
-    ## my_layer <- ogrListLayers(topo_word)
-    
-#     topo_word_url <- 
-#       "https://github.com/agstudy/tempo_repo/blob/master/inst/data/countries.topojson"
+    if(!file.exists(topo_word)) return(NULL)
     cat("topo  word is: ",topo_word,"\n")
-    word_map <- readOGR(topo_word, layer = "countries.geo",
-                        drop_unsupported_fields = TRUE)
+    word_map <- 
+      readOGR(topo_word, layer = "countries.geo",
+              drop_unsupported_fields = TRUE)
     .e$WORD_MAP <- word_map[order(word_map$name),]
   }
   .e$WORD_MAP
