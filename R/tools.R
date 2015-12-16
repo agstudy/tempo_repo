@@ -23,8 +23,7 @@ get_pal <- function(values){
 #' @importFrom  rgdal ogrListLayers
 word_map <- function(){
   if(is.null(.e$WORD_MAP)){
-    if(missing(topo_word))
-      topo_word <- file.path(package = "adveqmap","data","word_map.rds")
+    topo_word <- file.path(package = "adveqmap","data","word_map.rds")
     .e$WORD_MAP <- readRDS(topo_word)
   }
   .e$WORD_MAP
