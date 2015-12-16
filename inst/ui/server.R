@@ -6,7 +6,7 @@
 #
 
 library(shiny)
-#library(rCharts)
+library(rCharts)
 library(adveqmap)
 library(leaflet)
 db <- load_data(path=file.path(".","data","database.csv"))
@@ -39,11 +39,11 @@ shinyServer(function(input, output) {
     values$highlight <- input$investmap_shape_mouseover$id
   })
   
-#   observe({
-#     if(!is.null(values$highlight))
-#       output[["investChart"]] <- 
-#         renderChart2(multiple_barplot(db,values$highlight,id="investChart"))
-#   })
+  observe({
+    if(!is.null(values$highlight))
+      output[["investChart"]] <- 
+        renderChart2(multiple_barplot(db,values$highlight,id="investChart"))
+  })
   
   
   lastHighlighted <- c()
