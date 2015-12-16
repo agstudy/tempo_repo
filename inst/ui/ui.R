@@ -53,7 +53,7 @@ currency_select <-
                        ))))
 
 chart_region <- 
-  div(showOutput("investChart", "Highcharts")
+  div(showOutput("investChart", "highcharts")
     , class = "span4")
 
 
