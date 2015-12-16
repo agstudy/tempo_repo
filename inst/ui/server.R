@@ -10,7 +10,7 @@ library(shiny)
 library(adveqmap)
 library(leaflet)
 db <- load_data(path=file.path(".","data","database.csv"))
-word_path <- file.path(getwd(),"data","countries.topojson")
+word_path <- file.path(getwd(),"data","word_map.rds")
 shinyServer(function(input, output) {
   values <- reactiveValues(highlight=c())
   ratios <- reactive(get_ratios(db = db))
