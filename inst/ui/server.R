@@ -24,7 +24,8 @@ shinyServer(function(input, output) {
   )
   output$investmap <- renderLeaflet({
     if(is.null(input$variable))return()
-    plot(invest_map())
+    plot(invest_map()) %>%
+           setView(10.804851,37.954540,zoom=2)
   })
   
   

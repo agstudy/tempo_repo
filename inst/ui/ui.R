@@ -25,7 +25,7 @@ logo_row <-
 left_side <-
   column(width = 8,
          box(width = NULL, solidHeader = TRUE,
-             leafletOutput("investmap", height = 500)
+             leafletOutput("investmap", height = 700)
          ),
          box(width = NULL,solidHeader = TRUE,
              uiOutput("investTable")
